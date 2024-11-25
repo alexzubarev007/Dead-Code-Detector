@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 		
 		const text = editor.document.getText();
 		editor.setDecorations(red_highlight, []); 
-		const variable_regular = /\b(int|float|double|char|std::string|bool|auto)\s+([a-zA-Z_][a-zA-Z0-9_]*)\b(?!\s*\()/g;;
+		const variable_regular = /\b(int|float|double|char|std::string|bool|auto)\s+([a-zA-Z_][a-zA-Z0-9_]*)\b(?!\s*\()/g;
 		const function_regular = /\b[a-zA-Z_][a-zA-Z0-9_]*\s+[a-zA-Z_][a-zA-Z0-9_]*\s*\([^)]*\)\s*\{?/g;
 		const unused: vscode.DecorationOptions[] = [];
 		let match;
@@ -27,7 +27,6 @@ export function activate(context: vscode.ExtensionContext) {
 			const begin = editor.document.positionAt(match.index);
 			const end = editor.document.positionAt(match.index + match[0].length);
 			const variable_length = new vscode.Range(begin, end);
-			console.log(part_of_variable);
 			if (!text.includes(part_of_variable, match.index + match[0].length) ) {
 				unused.push({
 					range: variable_length,
@@ -66,9 +65,5 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 }
 
-function IsPartOfAnotherIdentifier(text: string, name: string): boolean {
-	const regex = new RegExp(`[^a-zA-Z0-9_]${name}[^a-zA-Z0-9_]`, 'g');
-	return regex.test(text);
-}
 
 export function deactivate() { }
